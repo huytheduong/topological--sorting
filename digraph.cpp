@@ -48,8 +48,7 @@ DigraphMatrix::~DigraphMatrix()
 {
     if(adjMatrix != NULL)
     {
-        // free allocated memory
-        for(int vertex = 0; vertex < numVertices; vertex++)
+        for(int vertex = 0; vertex < numVertices; vertex++)//free allocated memory
             delete[] adjMatrix[vertex];
 
         delete[] adjMatrix;
@@ -86,8 +85,7 @@ int DigraphMatrix::findNeighbor(int v0, int prevN) const
 {
     int v2 = -1;
 
-    // traverse vertices from prevN+1
-    for(int v1 = prevN + 1; v2 < 0 && v1 < numVertices; v1++)
+    for(int v1 = prevN + 1; v2 < 0 && v1 < numVertices; v1++)//traverse vertices from prevN+1
     {
         if(adjMatrix[v0][v1])
         {
@@ -111,24 +109,22 @@ void DigraphMatrix::DFS(int v0, bool* discovered, bool* explored, vector<int>& s
 
         if(v1 >= 0) // found
         {
-            if(discovered[v1] && !explored[v1])
+            if(discovered[v1] && !explored[v1])//a cycle
             {
-                // a cycle
                 throw invalid_argument("Cycle at the graph");
             }
-            else // recursive call
+            else
             {
-                DFS(v1, discovered, explored, sorted);
+                DFS(v1, discovered, explored, sorted);//recursive call
             }    
         }
         else
         {
             if(!explored[v0])
             {
-                // if not added to sorted yet, add
-                explored[v0] = true;
+                explored[v0] = true;//if not added to sorted yet, add
 
-                sorted.insert(sorted.begin(), v0); // in this case no need to reverse
+                sorted.insert(sorted.begin(), v0);//in this case no need to reverse
             }
         }
     }
@@ -136,7 +132,7 @@ void DigraphMatrix::DFS(int v0, bool* discovered, bool* explored, vector<int>& s
 
 vector<int> DigraphMatrix::topologicalSort() const
 {
-    vector<int> sorted; // vector to return
+    vector<int> sorted;//vector to return
 
     int v0 = -1, v1;
 
@@ -158,7 +154,7 @@ vector<int> DigraphMatrix::topologicalSort() const
             for(v1 = 0; v1 < numVertices; v1++)
                 discovered[v1] = false;
 
-            // a starting vertex found, perform DFS
+            //a starting vertex found, perform DFS
             DFS(v0, discovered, explored, sorted);
         }
         else if((int)sorted.size() < numVertices)
@@ -168,7 +164,7 @@ vector<int> DigraphMatrix::topologicalSort() const
     }
     while(v0 >= 0);
 
-    // free memory
+    //free memory
     delete[] discovered;
     delete[] explored  ;
 
